@@ -150,6 +150,21 @@ header {
    * main
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+.top-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    background:#f8f8f82c;
+}
+
+img#proto-logo {
+    max-height: 40px;
+    width:auto;
+    display: flex;
+    justify-content: left;
+}
+
 main {
     grid-area: main;
 }
@@ -286,6 +301,13 @@ div#suggestion-box {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
    * Block editor
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+div#blocks-save-load-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: left;
+    margin-top: 4px;
+}
 
 div#block-editor {
     display: grid;

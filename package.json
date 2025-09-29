@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@blockly/continuous-toolbox": "^7.0.2",
+    "blockly": "^12.3.1"
+  }
+}

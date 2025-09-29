@@ -1,12 +1,44 @@
 console.info("... post script loaded");
 
 import { toolbox } from "./module-scripts/blocks.js";
+import { keywords } from "./module-scripts/blocks.js";
 import { getTheme } from "./module-scripts/themes.js";
+
+export {workspace};
+
+//setup for blockly plugins and mods
+registerContinuousToolbox();
+import { inject } from "./mods/mods.js";
+inject();
 
 var workspace = Blockly.inject("blockly-canvas", {
     theme: getTheme(),
     toolbox: toolbox,
+    //renderer: 'zelos',
+    //renderer: 'thrasos',
+    //renderer: 'geras',
+    renderer: 'proto_renderer',
+    grid:
+         {spacing: 20,
+          length: 3,
+          colour: '#e4e4e4ff',
+          snap: false},
+    zoom:
+         {controls: false,
+          wheel: false,
+          startScale: 0.8,
+          maxScale: 3,
+          minScale: 0.3,
+          scaleSpeed: 1.2,
+          pinch: false},
+    trashcan: true,
+    plugins: {
+        flyoutsVerticalToolbox: 'ContinuousFlyout',
+        metricsManager: 'ContinuousMetrics',
+        toolbox: 'ContinuousToolbox',
+    },
 });
+
 
 const supportedEvents = new Set([
     Blockly.Events.BLOCK_CHANGE,
@@ -42,28 +74,6 @@ if (codeEditorContainer && codeInput) {
 } else {
     console.error("Could not find code editor container or input element.");
 }
-
-// Define keywords for autocomplete
-const keywords = [
-    ".wait(",
-    ".wait_until(",
-    ".wait_while(",
-    ".button(",
-    ".pressed(",
-    ".held(",
-    ".smallmotor(",
-    ".largemotor(",
-    ".spin(",
-    ".spin_back(",
-    ".stop(",
-    ".drivetrain(",
-    ".drive(",
-    ".drive_back(",
-    ".turn(",
-    ".turn_back(",
-    ".curve(",
-    ".curve_back(",
-];
 
 let indentationLevel = 0;
 let inIndentMode = false;
@@ -109,6 +119,52 @@ function saveTextFromLineEditor() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+const saveBlocksButton = document.getElementById('save-blocks-button');
+saveBlocksButton.addEventListener('click', saveCodeFromBlockEditor);
+function saveCodeFromBlockEditor() {
+    const state = Blockly.serialization.workspaces.save(workspace);
+    const jsonString = JSON.stringify(state, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "blocks.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    console.log("Blocks saved to local storage. JSON: " + jsonString);
+}
+
+const loadBlocksButton = document.getElementById('load-blocks-button');
+loadBlocksButton.addEventListener('click', loadCodeIntoBlockEditor);
+function loadCodeIntoBlockEditor() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json,application/json";
+
+    input.onchange = async event => {
+        const file = event.target.files[0];
+        if (!file) return; // user cancelled
+        try {
+            const text = await file.text();
+            const state = JSON.parse(text);
+            console.log("✅ Loaded state:", state);
+            Blockly.serialization.workspaces.load(state, workspace);
+
+
+
+        } catch (err) {
+            console.error("Failed to read/parse JSON:", err);
+            alert("Could not load the file make sure it's valid JSON.");
+        }
+    };
+
+    // Programmatically trigger the file‑picker dialog
+    input.click();
 }
 
 codeInput.addEventListener("input", () => {
