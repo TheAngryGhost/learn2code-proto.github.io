@@ -16,12 +16,12 @@ const functionDefinitions = {
 					"name": "smallmotor",
 					"description": "Creates a smallmotor",
 					"blockTemplate": [
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"is a smallmotor on port",
-						[() => new FieldGridDropdown([['1', '1'],['2', '2'],['3', '3'],['4', '4'],['5', '5']]), "port"],
+						["FieldGridDropdown", "port", [['1', '1'],['2', '2'],['3', '3'],['4', '4'],['5', '5']]],
 						"{new line}",
 						"in direction",
-						[() => new Blockly.FieldDropdown([['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]), "direction"],
+						["FieldDropdown", "direction", [['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]],
 					],
 					"blockOutput": ["void", null],
 					"codeGenerator": function (block) {
@@ -37,12 +37,12 @@ const functionDefinitions = {
 					"name": "largemotor",
 					"description": "Creates a largemotor",
 					"blockTemplate": [
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"is a largemotor on port",
-						[() => new FieldGridDropdown([['6', '6'],['7', '7']]), "port"],
+						["FieldGridDropdown", "port", [['6', '6'],['7', '7']]],
 						"{new line}",
 						"in direction",
-						[() => new Blockly.FieldDropdown([['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]), "direction"],
+						["FieldDropdown", "direction", [['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]],
 					],
 					"blockOutput": ["void", null],
 					"codeGenerator": function (block) {
@@ -59,9 +59,9 @@ const functionDefinitions = {
 					"description": "Spins the motor at a power until stopped.",
 					"blockTemplate": [
 						"Spin",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "power"],
+						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power"
 					],
 					"blockOutput": ["void", null],
@@ -77,11 +77,11 @@ const functionDefinitions = {
 					"description": "Spins the motor at a power for a time.",
 					"blockTemplate": [
 						"Spin",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "power"],
+						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power for",
-						[() => new Blockly.FieldNumber(0, 0, Infinity, 0.01), "time"],
+						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
 					"blockOutput": ["void", null],
@@ -98,7 +98,7 @@ const functionDefinitions = {
 					"description": "Stops the motor/drivetrain.",
 					"blockTemplate": [
 						"Stop",
-						[() => new Blockly.FieldTextInput("name"), "name"]
+						["FieldTextInput", "name", ["name"]],
 					],
 					"blockOutput": ["void", null],
 					"codeGenerator": function (block) {
@@ -117,14 +117,14 @@ const functionDefinitions = {
 					"name": "drivetrain",
 					"description": "Creates a drivetrain",
 					"blockTemplate": [
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"is a drivetrain from motors",
-						[() => new Blockly.FieldTextInput("left"), "left"],
+						["FieldTextInput", "left", ["left"]],
 						"and",
-						[() => new Blockly.FieldTextInput("right"), "right"],
+						["FieldTextInput", "right", ["right"]],
 						"{new line}",
 						"in direction",
-						[() => new Blockly.FieldDropdown([['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]), "direction"]
+						["FieldDropdown", "direction", [['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]]
 					],
 					"blockOutput": ["void", null],
 					"codeGenerator": function (block) {
@@ -142,9 +142,9 @@ const functionDefinitions = {
 					"description": "Drives the drivetrain at a power until stopped.",
 					"blockTemplate": [
 						"Drive",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "power"],
+						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power"
 					],
 					"blockOutput": ["void", null],
@@ -160,11 +160,11 @@ const functionDefinitions = {
 					"description": "Drives the drivetrain at a power for a time.",
 					"blockTemplate": [
 						"Drive",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "power"],
+						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power for",
-						[() => new Blockly.FieldNumber(0, 0, Infinity, 0.01), "time"],
+						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
 					"blockOutput": ["void", null],
@@ -181,11 +181,11 @@ const functionDefinitions = {
 					"description": "Curves the drivetrain at two different powers until stopped.",
 					"blockTemplate": [
 						"Curve",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "left"],
+						["FieldNumber", "left", [100, -100, 100, 0.1]],
 						"left power and",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "right"],
+						["FieldNumber", "right", [100, -100, 100, 0.1]],
 						"right power"
 					],
 					"blockOutput": ["void", null],
@@ -202,13 +202,13 @@ const functionDefinitions = {
 					"description": "Curves the drivetrain at two different powers for a time.",
 					"blockTemplate": [
 						"Curve",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "left"],
+						["FieldNumber", "left", [100, -100, 100, 0.1]],
 						"left power and",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "right"],
+						["FieldNumber", "right", [100, -100, 100, 0.1]],
 						"right power for",
-						[() => new Blockly.FieldNumber(0, 0, Infinity, 0.01), "time"],
+						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
 					"blockOutput": ["void", null],
@@ -226,9 +226,9 @@ const functionDefinitions = {
 					"description": "Turn the drivetrain at a power until stopped.",
 					"blockTemplate": [
 						"Turn",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "power"],
+						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power"
 					],
 					"blockOutput": ["void", null],
@@ -244,11 +244,11 @@ const functionDefinitions = {
 					"description": "Drives the drivetrain at a power for a time.",
 					"blockTemplate": [
 						"Turn",
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"at",
-						[() => new Blockly.FieldNumber(100, -100, 100, 0.1), "power"],
+						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power for",
-						[() => new Blockly.FieldNumber(0, 0, Infinity, 0.01), "time"],
+						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
 					"blockOutput": ["void", null],
@@ -270,9 +270,9 @@ const functionDefinitions = {
 					"name": "button",
 					"description": "Creates a button",
 					"blockTemplate": [
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"is a button on port",
-						[() => new Blockly.FieldDropdown([['8', '8'],['9', '9']]), "port"]
+						["FieldGridDropdown", "port", [['8', '8'],['9', '9']]]
 					],
 					"blockOutput": ["void", null],
 					"codeGenerator": function (block) {
@@ -286,7 +286,7 @@ const functionDefinitions = {
 					"name": "isPressed",
 					"description": "Returns whether or not the button is pressed.",
 					"blockTemplate": [
-						[() => new Blockly.FieldTextInput("name"), "name"],
+						["FieldTextInput", "name", ["name"]],
 						"is pressed?"
 					],
 					"blockOutput": ["Boolean", null],
@@ -307,7 +307,7 @@ const functionDefinitions = {
 					"description": "Waits for the number of seconds.",
 					"blockTemplate": [
 						"wait",
-						[() => new Blockly.FieldNumber(0, 0, Infinity, 0.01), "time"],
+						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
 					"blockOutput": ["void", null],
@@ -322,7 +322,7 @@ const functionDefinitions = {
 					"description": "Waits until the given action is true.",
 					"blockTemplate": [
 						"wait until",
-						[() => null, "function", 'Boolean']
+						["Function", "function", 'Boolean'],
 					],
 					"blockOutput": ["void", null],
 					"codeGenerator": function (block) {
@@ -338,11 +338,50 @@ const functionDefinitions = {
 						const code = `make.wait_until${functionText}\n`;
 						return code;
 					}
-				}
+				},
+								{
+					"name": "betterif", //this is a test block please remove this later
+					"description": "if statement help.",
+					"blockTemplate": [
+						"if",
+						["Function", "function", 'Boolean'],
+						"{new line}",
+						"	then do:",
+						["Statement", "input"],
+					],
+					"blockOutput": ["void", null],
+					"codeGenerator": function (block) {
+						var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
+						let len = value_function.length;
+						if (len == 0)
+							value_function = 'False';
+						else {
+							value_function = value_function.replace('(','');
+							value_function = value_function.slice(0,-1);
+						}
+						var input = python.pythonGenerator.statementToCode(block, 'input');
+						if (input.length == 0) {
+							input = '    pass';
+						}
+						const code = `if ${value_function}:\n${input}\n`;
+						return code;
+					}
+				},
 			]
 		}
 	]
 };
+
+//[Blockly Input Type, Name, (Optional) Additional Params]
+/**
+ * Function, Name, [Type:Boolean,Number,String,Any]
+ * Statement, Name
+ * FieldTextInput, Name, [Default Text]
+ * FieldNumber
+ * FieldDropdown, Name, [[Text, Value], [Text, Value], ...]
+ * FieldGridDropdown, Name, [[Text, Value], [Text, Value], ...]
+ * 
+ */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Block Builder
@@ -366,16 +405,21 @@ for (let category of functionDefinitions.categories) {
 					var dummyInput = this.appendDummyInput();
 					for (let item of block.blockTemplate) {
 						if (Array.isArray(item)) {
-							// General handling for value inputs vs fields
-							// If the field constructor returns null, treat as value input (for blocks like "until")
-							const field = item[0] ? item[0]() : null;
-							if (field === null) {
+							if (item[0] === "FieldTextInput") {
+								dummyInput.appendField(new Blockly.FieldTextInput(item[2][0]), item[1]);
+							} else if (item[0] === "FieldGridDropdown") {
+								dummyInput.appendField(new FieldGridDropdown(item[2]), item[1]);
+							} else if (item[0] === "FieldDropdown") {
+								dummyInput.appendField(new Blockly.FieldDropdown(item[2]), item[1]);
+							} else if (item[0] === "FieldNumber") {
+								dummyInput.appendField(new Blockly.FieldNumber(item[2][0],item[2][1],item[2][2],item[2][3],item[2][4]), item[1]);
+							} else if (item[0] === "Function") {
 								this.appendValueInput(item[1])
-									.setCheck(item[2] || null)
-									.appendField('');
-								dummyInput = this.appendDummyInput();
+								.setCheck(item[2] || null)
+							} else if (item[0] === "Statement") {
+								this.appendStatementInput(item[1])
 							} else {
-								dummyInput.appendField(field, item[1]);
+								console.error("Unknown item type in block template:", item);
 							}
 						} else if (item === "{new line}") {
 							dummyInput = this.appendDummyInput();
