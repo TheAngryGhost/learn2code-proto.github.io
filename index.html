@@ -11,30 +11,40 @@
     <meta name="description" content="Block and line coding website for PROTO at the University of Nebraska-Lincoln" />
     <meta name="color-scheme" content="light dark" />
 
+
     <!-- Blockly. -->
-    <script type="text/javascript" defer="" src="./deps/blockly/blockly_compressed.js"></script>
-    <script type="text/javascript" defer="" src="./deps/blockly/blocks_compressed.js"></script>
-    <script type="text/javascript" defer="" src="./deps/blockly/python_compressed.js"></script>
-    <script type="text/javascript" defer="" src="./deps/blockly/en.js"></script>
+    <script type="text/javascript" defer="" src="https://unpkg.com/blockly/blockly_compressed.js"></script>
+    <script type="text/javascript" defer="" src="https://unpkg.com/blockly/blocks_compressed.js"></script>
+    <script type="text/javascript" defer="" src="https://unpkg.com/blockly/python_compressed.js"></script>
+    <script type="text/javascript" defer="" src="https://unpkg.com/blockly/msg/en.js"></script>
+    <!-- Blockly Plugins. -->
+    <script type="text/javascript" defer="" src="https://unpkg.com/@blockly/field-grid-dropdown"></script>
+    <script type="text/javascript" defer="" src="https://unpkg.com/@blockly/continuous-toolbox"></script>
     <!-- Prism. -->
-    <link type="text/css" rel="stylesheet" href="./deps/prism/prism-tomorrow-night.min.css" />
-    <script type="text/javascript" defer="" src="./deps/prism/prism.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/prismjs/themes/prism-tomorrow.css"/>
+    <script src="https://unpkg.com/prismjs/prism.js"></script>
+    <script src="https://unpkg.com/prismjs/components/prism-python.min.js"></script>
+
     <!-- CodeMirror. -->
-    <link type="text/css" rel="stylesheet" href="./deps/codemirror/codemirror.css" />
-    <link type="text/css" rel="stylesheet" href="./deps/codemirror/show-hint.css" />
-    <script type="text/javascript" defer="" src="./deps/codemirror/codemirror.js"></script>
-    <script type="text/javascript" defer="" src="./deps/codemirror/show-hint.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.65.20/lib/codemirror.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.65.20/addon/hint/show-hint.css"/>
+    <script type="text/javascript" defer="" src="https://unpkg.com/codemirror@5.65.20/lib/codemirror.js"></script>
+    <script type="text/javascript" defer="" src="https://unpkg.com/codemirror@5.65.20/addon/hint/show-hint.js"></script>
+
     <!-- JSZip. -->
-    <script type="text/javascript" defer="" src="./deps/jszip/jszip.min.js"></script>
+    <script type="text/javascript" defer="" src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
+
     <!-- Local. -->
     <link type="image/x-icon" rel="icon" href="./images/favicon.ico" />
     <link type="text/css" rel="stylesheet" href="./index.html.css" />
     <script type="text/javascript" src="./index.html.pre.js"></script>
     <script type="module" src="./index.html.post.js"></script>
+
 </head>
 
 <body>
-    <nav>
+    <nav class="top-nav">
+        <img id="proto-logo" src="images/proto-unl.png" alt="PROTO Logo" />
         <h2>Coding with PROTO</h2>
         <!-- <a href="https://proto.unl.edu" title="https://proto.unl.edu" target="_blank">PROTO UNL Website</a>
         <a href="https://github.com/ctwiebe23/PROTO" title="https://github.com/ctwiebe23/PROTO" target="_blank">MAKE
@@ -45,13 +55,13 @@
     </nav>
 
     <header>
+        <br />
         For the block coder: Drag blocks from the left-most column into the middle column. A preview
         of your code will appear on the right.
         <br />
         <button onclick="switchEditor()">
             Change coding mode
         </button>
-        <br />
         <a href="./cheatsheet.html" title="./cheatsheet.html" target="_blank"
           >Click here for the list of coding commands</a>
     </header>
@@ -65,6 +75,15 @@
         </div>
 
         <div id="block-editor">
+            <div id="blocks-save-load-buttons">
+                <button id="save-blocks-button">
+                    Save Blocks 💾
+                </button>
+                <button id="load-blocks-button">
+                    Load Blocks 📁
+                </button>
+            </div>
+
             <section id="blockly-canvas"></section>
 
             <section id="line-preview">

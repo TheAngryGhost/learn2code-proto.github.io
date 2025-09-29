@@ -10,14 +10,14 @@ function getTheme() {
                 {
                     logic_blocks:
                     {
-                        colourPrimary: '#cc44cc'
+                        colourPrimary: '#e9a719'
                         , colourSecondary: '#cccccc'
                         , colourTertiary: '#cccccc'
                     }
                     , loop_blocks:
                     {
-                        colourPrimary: '#cc44cc'
-                        , colourSecondary: '#cccccc'
+                        colourPrimary: '#e2be20'
+                        , colourSecondary: '#0c0b0b'
                         , colourTertiary: '#cccccc'
                     }
                     , math_blocks:
@@ -44,7 +44,7 @@ function getTheme() {
                 }
                 , componentStyles:
                 {
-                    workspaceBackgroundColour: '#eeeeee'
+                    workspaceBackgroundColour: '#f1f1f1ff'
                     , toolboxBackgroundColour: '#cccccc'
                     , toolboxForegroundColour: '#222222'
                     , flyoutBackgroundColour: '#cccccc'
@@ -52,6 +52,7 @@ function getTheme() {
                     , flyoutOpacity: 0.8
                     , insertionMarkerColour: '#222222'
                     , insertionMarkerOpacity: 0.3
+                    , scrollbarColour: '#424242ff'
                     , scrollbarOpacity: 0.4
                 }
             }
