@@ -10,7 +10,7 @@ const functionDefinitions = {
 	"categories": [
 		{
 			"name": "Motors",
-			"color": "#cc4444",
+			"color": "#f43131",
 			"blocks": [
 				{
 					"name": "smallmotor",
@@ -23,7 +23,8 @@ const functionDefinitions = {
 						"in direction",
 						["FieldDropdown", "direction", [['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]],
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".smallmotor(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const dropdown_port = block.getFieldValue('port');
@@ -44,7 +45,8 @@ const functionDefinitions = {
 						"in direction",
 						["FieldDropdown", "direction", [['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]],
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".largemotor(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const dropdown_port = block.getFieldValue('port');
@@ -64,7 +66,8 @@ const functionDefinitions = {
 						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": [".spin(",".spin_back("],
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_power = block.getFieldValue('power');
@@ -84,7 +87,7 @@ const functionDefinitions = {
 						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
-					"blockOutput": ["void", null],
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_power = block.getFieldValue('power');
@@ -100,10 +103,52 @@ const functionDefinitions = {
 						"Stop",
 						["FieldTextInput", "name", ["name"]],
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".stop(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const code = `${text_name}.stop()\n`;
+						return code;
+					}
+				}
+			]
+		},
+				{
+			"name": "Servos",
+			"color": "#cc4444",
+			"blocks": [
+				{
+					"name": "servo",
+					"description": "Creates a servo",
+					"blockTemplate": [
+						["FieldTextInput", "name", ["name"]],
+						"is a servo on port",
+						["FieldGridDropdown", "port", [['1', '1'],['2', '2'],['3', '3'],['4', '4'],['5', '5']]],
+					],
+					"autoComplete": ".servo(",
+					"blockOutput": ["void"],
+					"codeGenerator": function (block) {
+						const text_name = spacesToUnderscores(block.getFieldValue('name'));
+						const dropdown_port = block.getFieldValue('port');
+						const code = `${text_name} = make.servo(port=${dropdown_port})\n`;
+						return code;
+					}
+				},
+				{
+					"name": "servoSpinTo",
+					"description": "Spins the servo to angle.",
+					"blockTemplate": [
+						"Spin servo",
+						["FieldTextInput", "name", ["name"]],
+						"move to",
+						["FieldNumber", "angle", [0, 0, 120, 0.1]],
+					],
+					"autoComplete": ".moveto(",
+					"blockOutput": ["void"],
+					"codeGenerator": function (block) {
+						const text_name = spacesToUnderscores(block.getFieldValue('name'));
+						const number_angle = block.getFieldValue('angle');
+						const code = `${text_name}.spin(angle=${number_angle})\n`;
 						return code;
 					}
 				}
@@ -126,7 +171,8 @@ const functionDefinitions = {
 						"in direction",
 						["FieldDropdown", "direction", [['clockwise ↻', '1'],['counter-clockwise ↺', '-1']]]
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".drivetrain(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const text_left = spacesToUnderscores(block.getFieldValue('left'));
@@ -147,7 +193,8 @@ const functionDefinitions = {
 						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": [".drive(",".drive_back("],
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_power = block.getFieldValue('power');
@@ -167,7 +214,8 @@ const functionDefinitions = {
 						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": "",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_power = block.getFieldValue('power');
@@ -188,7 +236,8 @@ const functionDefinitions = {
 						["FieldNumber", "right", [100, -100, 100, 0.1]],
 						"right power"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": [".curve(",".curve_back("],
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_left = block.getFieldValue('left');
@@ -211,7 +260,8 @@ const functionDefinitions = {
 						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": "",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_left = block.getFieldValue('left');
@@ -231,7 +281,8 @@ const functionDefinitions = {
 						["FieldNumber", "power", [100, -100, 100, 0.1]],
 						"power"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": [".turn(",".turn_back("],
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_power = block.getFieldValue('power');
@@ -251,7 +302,8 @@ const functionDefinitions = {
 						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": "",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_power = block.getFieldValue('power');
@@ -274,7 +326,8 @@ const functionDefinitions = {
 						"is a button on port",
 						["FieldGridDropdown", "port", [['8', '8'],['9', '9']]]
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".button(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const dropdown_port = block.getFieldValue('port');
@@ -289,10 +342,26 @@ const functionDefinitions = {
 						["FieldTextInput", "name", ["name"]],
 						"is pressed?"
 					],
-					"blockOutput": ["Boolean", null],
+					"autoComplete": ".pressed(",
+					"blockOutput": ["Boolean"],
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const code = `${text_name}.pressed()`;
+						return [code, python.Order.NONE];
+					}
+				},
+				{
+					"name": "isHeld",
+					"description": "Returns whether or not the button is held.",
+					"blockTemplate": [
+						["FieldTextInput", "name", ["name"]],
+						"is held?"
+					],
+					"autoComplete": ".held(",
+					"blockOutput": ["Boolean"],
+					"codeGenerator": function (block) {
+						const text_name = spacesToUnderscores(block.getFieldValue('name'));
+						const code = `${text_name}.held()`;
 						return [code, python.Order.NONE];
 					}
 				}
@@ -310,7 +379,8 @@ const functionDefinitions = {
 						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
 						"seconds"
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".wait(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const number_time = block.getFieldValue('time');
 						const code = `make.wait(seconds=${number_time})\n`;
@@ -318,13 +388,14 @@ const functionDefinitions = {
 					}
 				},
 				{
-					"name": "until",
+					"name": "wait_until",
 					"description": "Waits until the given action is true.",
 					"blockTemplate": [
 						"wait until",
 						["Function", "function", 'Boolean'],
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".wait_until(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
 						let len = value_function.length;
@@ -339,42 +410,98 @@ const functionDefinitions = {
 						return code;
 					}
 				},
-								{
-					"name": "betterif", //this is a test block please remove this later
-					"description": "if statement help.",
+				{
+					"name": "wait_while",
+					"description": "Waits while the given action is true.",
 					"blockTemplate": [
-						"if",
+						"wait while",
 						["Function", "function", 'Boolean'],
-						"{new line}",
-						"	then do:",
-						["Statement", "input"],
 					],
-					"blockOutput": ["void", null],
+					"autoComplete": ".wait_while(",
+					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
 						let len = value_function.length;
-						if (len == 0)
-							value_function = 'False';
-						else {
-							value_function = value_function.replace('(','');
-							value_function = value_function.slice(0,-1);
-						}
-						var input = python.pythonGenerator.statementToCode(block, 'input');
-						if (input.length == 0) {
-							input = '    pass';
-						}
-						const code = `if ${value_function}:\n${input}\n`;
+						let functionText;
+						if (len < 4)
+							functionText = '()';
+						else if (value_function[len - 3] == '(' && value_function[len - 2] == ')')
+							functionText = value_function.replace('()', '');
+						else
+							functionText = `(lambda: ${value_function})`
+						const code = `make.wait_while${functionText}\n`;
 						return code;
 					}
 				},
 			]
-		}
+		},
+		//{
+		//	"name": "Test Blocks",
+		//	"color": "#cc6d44",
+		//	"blocks": [
+		//		{
+		//			"name": "betterif",
+		//			"description": "if statement help.",
+		//			"blockTemplate": [
+		//				"if",
+		//				["Function", "function", 'Boolean'],
+		//				"{new line}",
+		//				"	then do:",
+		//				["Statement", "input"],
+		//			],
+		//			"blockOutput": ["void"],
+		//			"codeGenerator": function (block) {
+		//				var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
+		//				let len = value_function.length;
+		//				if (len == 0)
+		//					value_function = 'False';
+		//				else {
+		//					value_function = value_function.replace('(','');
+		//					value_function = value_function.slice(0,-1);
+		//				}
+		//				var input = python.pythonGenerator.statementToCode(block, 'input');
+		//				if (input.length == 0) {
+		//					input = '\tpass';
+		//				}
+		//				const code = `if ${value_function}:\n${input}\n`;
+		//				return code;
+		//			}
+		//		},
+		//		{
+		//			"name": "BetterCompare",
+		//			"description": "Returns whether or not the button is pressed.",
+		//			"blockTemplate": [
+		//				["Function", "functionA", "Any"],
+		//				"{new line}",
+		//				["FieldGridDropdown", "operation", [['=', '=='],['>', '>'],['<', '<'],['≠', '!='],['≥', '>='],['≤', '<=']]],
+		//				["Function", "functionB", "Any"],
+		//			],
+		//			"blockOutput": ["Boolean"],
+		//			"codeGenerator": function (block) {
+		//				const operation = spacesToUnderscores(block.getFieldValue('operation'));
+		//				var value_functionA_code = python.pythonGenerator.valueToCode(block, 'functionA', python.Order.ATOMIC);
+		//				var value_functionB_code = python.pythonGenerator.valueToCode(block, 'functionB', python.Order.ATOMIC);
+//
+		//				if (value_functionA_code.length == 0) {
+		//					value_functionA_code = '0';
+		//				}
+////
+		//				if (value_functionB_code.length == 0) {
+		//					value_functionB_code = '0';
+		//				}
+//
+		//				let code = `${value_functionA_code} ${operation} ${value_functionB_code}`
+		//				return [code, python.Order.NONE];
+		//			}
+		//		}
+		//	]
+		//}
 	]
 };
 
 //[Blockly Input Type, Name, (Optional) Additional Params]
 /**
- * Function, Name, [Type:Boolean,Number,String,Any]
+ * Function, Name, Type:Boolean,Number,String,Any
  * Statement, Name
  * FieldTextInput, Name, [Default Text]
  * FieldNumber
@@ -397,8 +524,6 @@ var keywords = [];
 for (let category of functionDefinitions.categories) {
 	let namesUsed = [];
 
-	console.log(category.name, category.color);
-
 	for (let block of category.blocks) {
 			const blockDef = {
 				init: function () {
@@ -414,8 +539,12 @@ for (let category of functionDefinitions.categories) {
 							} else if (item[0] === "FieldNumber") {
 								dummyInput.appendField(new Blockly.FieldNumber(item[2][0],item[2][1],item[2][2],item[2][3],item[2][4]), item[1]);
 							} else if (item[0] === "Function") {
-								this.appendValueInput(item[1])
-								.setCheck(item[2] || null)
+								if (item[2] === "Any"){
+									this.appendValueInput(item[1])
+								} else {
+									this.appendValueInput(item[1])
+									.setCheck(item[2] || null)
+								}
 							} else if (item[0] === "Statement") {
 								this.appendStatementInput(item[1])
 							} else {
@@ -451,7 +580,14 @@ for (let category of functionDefinitions.categories) {
 			python.pythonGenerator.forBlock[block.name] = block.codeGenerator;
 		}
 		namesUsed.push(block.name);
-		keywords.push("." + block.name + "(");
+		if (Array.isArray(block.autoComplete)) {
+			for (let i of block.autoComplete) {
+				keywords.push(i);
+			}
+		} else if (typeof block.autoComplete == "string"){
+			keywords.push(block.autoComplete);
+		}
+		
 	}
 
 	toolboxCategories.contents.push({
@@ -535,6 +671,78 @@ toolboxCategories.contents.push(
         }
 );
 
+//toolboxCategories.contents[5].contents.push({
+//    kind: 'block',
+//    type: 'section',
+//})
+
+//TODO make sure these block save before you add them to the full release
+Blockly.Blocks['section'] = {
+  init: function() {
+	var color = "#ff0000";
+	var collapsed;
+
+	this.appendDummyInput().appendField(new Blockly.FieldCheckbox("",function(newValue) {
+			if(this.sourceBlock_){
+				collapsed = newValue;
+				this.sourceBlock_.updateShape_(null,newValue)
+			}
+		}),"collapsed")
+	.appendField(new Blockly.FieldTextInput("label"), "section_name")
+	.appendField(new FieldColourHsvSliders('#ff0000', function(newValue) {
+			if(this.sourceBlock_){
+				this.sourceBlock_.updateShape_(newValue,null)
+			}
+		}))
+	this.appendStatementInput("input")
+    this.setPreviousStatement(true, ["C", "EN"]);
+    this.setNextStatement(true, ["C", "EN"]);
+	this.setInputsInline(false);
+    this.setColour('#ff0000');
+  },
+
+  mutationToDom: function() {
+	var color;
+	var collapsed;
+    var container = document.createElement('mutation');
+    color = (this.getFieldValue('color') == '#ff0000');
+    container.setAttribute('color', color);
+    return container;
+  },
+
+  domToMutation: function(xmlElement) {
+	var color;
+	var collapsed;
+    color = (xmlElement.getAttribute('color') == '#ff0000');
+    this.updateShape_(color,null);
+  },
+
+  updateShape_: function(color, collapsed) {
+	console.log("update")
+	if(color != null) {
+		this.setColour(color);
+	}
+	if (collapsed != null) {
+		this.getInput("input").setVisible(collapsed === "TRUE")
+		this.render()
+	}
+  }
+};
+
+python.pythonGenerator.forBlock["section"] = function (block) {
+	function dropOneTab(str) {
+    	return str
+    		.split('\n')
+    		.map(line => {
+    		return line.slice(2);
+    		})
+    	.join('\n');
+	}
+	var raw = python.pythonGenerator.statementToCode(block, 'input');
+	var cleaned = dropOneTab(raw);
+	const code = `${cleaned}`;
+	return code;
+}
 
 const toolbox = toolboxCategories;
 
