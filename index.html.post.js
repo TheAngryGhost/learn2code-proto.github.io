@@ -8,6 +8,7 @@ export {workspace};
 
 //setup for blockly plugins and mods
 registerContinuousToolbox();
+registerFieldColour();
 import { inject } from "./mods/mods.js";
 inject();
 
@@ -22,7 +23,7 @@ var workspace = Blockly.inject("blockly-canvas", {
          {spacing: 20,
           length: 3,
           colour: '#e4e4e4ff',
-          snap: false},
+          snap: true},
     zoom:
          {controls: false,
           wheel: false,
