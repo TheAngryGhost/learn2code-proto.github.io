@@ -148,7 +148,28 @@ const functionDefinitions = {
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_angle = block.getFieldValue('angle');
-						const code = `${text_name}.spin(angle=${number_angle})\n`;
+						const code = `${text_name}.moveto(angle=${number_angle})\n`;
+						return code;
+					}
+				},
+				{
+					"name": "servoSpinToForTime",
+					"description": "Spins the servo to angle.",
+					"blockTemplate": [
+						"Spin servo",
+						["FieldTextInput", "name", ["name"]],
+						"move to",
+						["FieldNumber", "angle", [0, 0, 120, 0.1]],
+						"for",
+						["FieldNumber", "time", [0, 0, Infinity, 0.01]],
+						"seconds"
+					],
+					"autoComplete": ".moveto(",
+					"blockOutput": ["void"],
+					"codeGenerator": function (block) {
+						const text_name = spacesToUnderscores(block.getFieldValue('name'));
+						const number_angle = block.getFieldValue('angle');
+						const code = `${text_name}.moveto(angle=${number_angle},seconds=${number_time})\n`;
 						return code;
 					}
 				}
@@ -394,6 +415,7 @@ const functionDefinitions = {
 						"wait until",
 						["Function", "function", 'Boolean'],
 					],
+					"inline": true,
 					"autoComplete": ".wait_until(",
 					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
@@ -417,6 +439,7 @@ const functionDefinitions = {
 						"wait while",
 						["Function", "function", 'Boolean'],
 					],
+					"inline": true,
 					"autoComplete": ".wait_while(",
 					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
@@ -435,78 +458,177 @@ const functionDefinitions = {
 				},
 			]
 		},
-		//{
-		//	"name": "Test Blocks",
-		//	"color": "#cc6d44",
-		//	"blocks": [
-		//		{
-		//			"name": "betterif",
-		//			"description": "if statement help.",
-		//			"blockTemplate": [
-		//				"if",
-		//				["Function", "function", 'Boolean'],
-		//				"{new line}",
-		//				"	then do:",
-		//				["Statement", "input"],
-		//			],
-		//			"blockOutput": ["void"],
-		//			"codeGenerator": function (block) {
-		//				var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
-		//				let len = value_function.length;
-		//				if (len == 0)
-		//					value_function = 'False';
-		//				else {
-		//					value_function = value_function.replace('(','');
-		//					value_function = value_function.slice(0,-1);
-		//				}
-		//				var input = python.pythonGenerator.statementToCode(block, 'input');
-		//				if (input.length == 0) {
-		//					input = '\tpass';
-		//				}
-		//				const code = `if ${value_function}:\n${input}\n`;
-		//				return code;
-		//			}
-		//		},
-		//		{
-		//			"name": "BetterCompare",
-		//			"description": "Returns whether or not the button is pressed.",
-		//			"blockTemplate": [
-		//				["Function", "functionA", "Any"],
-		//				"{new line}",
-		//				["FieldGridDropdown", "operation", [['=', '=='],['>', '>'],['<', '<'],['≠', '!='],['≥', '>='],['≤', '<=']]],
-		//				["Function", "functionB", "Any"],
-		//			],
-		//			"blockOutput": ["Boolean"],
-		//			"codeGenerator": function (block) {
-		//				const operation = spacesToUnderscores(block.getFieldValue('operation'));
-		//				var value_functionA_code = python.pythonGenerator.valueToCode(block, 'functionA', python.Order.ATOMIC);
-		//				var value_functionB_code = python.pythonGenerator.valueToCode(block, 'functionB', python.Order.ATOMIC);
-//
-		//				if (value_functionA_code.length == 0) {
-		//					value_functionA_code = '0';
-		//				}
-////
-		//				if (value_functionB_code.length == 0) {
-		//					value_functionB_code = '0';
-		//				}
-//
-		//				let code = `${value_functionA_code} ${operation} ${value_functionB_code}`
-		//				return [code, python.Order.NONE];
-		//			}
-		//		}
-		//	]
-		//}
+		{
+			"name": "Test Blocks",
+			"color": "#cc6d44",
+			"blocks": [
+				{
+					"name": "betterif",
+					"description": "if statement help.",
+					"blockTemplate": [
+						"if",
+						["Function", "function", ["Boolean","Any"]],
+						"{new line}",
+						"	then do:",
+						["Statement", "input"],
+					],
+					"blockOutput": ["void"],
+					"codeGenerator": function (block) {
+						var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
+						let len = value_function.length;
+						if (len == 0)
+							value_function = 'False';
+						else {
+							value_function = value_function.replace('(','');
+							value_function = value_function.slice(0,-1);
+						}
+						var input = python.pythonGenerator.statementToCode(block, 'input');
+						if (input.length == 0) {
+							input = '\tpass';
+						}
+						const code = `if ${value_function}:\n${input}\n`;
+						return code;
+					}
+				},
+				{
+					"name": "BetterCompare",
+					"description": "Returns whether or not the button is pressed.",
+					"blockTemplate": [
+						["Function", "functionA", "Any"],
+						"{new line}",
+						["FieldGridDropdown", "operation", [['=', '=='],['>', '>'],['<', '<'],['≠', '!='],['≥', '>='],['≤', '<=']]],
+						["Function", "functionB", "Any"]
+					],
+					"blockOutput": ["Boolean"],
+					"codeGenerator": function (block) {
+						const operation = spacesToUnderscores(block.getFieldValue('operation'));
+						var value_functionA_code = python.pythonGenerator.valueToCode(block, 'functionA', python.Order.ATOMIC);
+						var value_functionB_code = python.pythonGenerator.valueToCode(block, 'functionB', python.Order.ATOMIC);
+						if (value_functionA_code.length == 0) {
+							value_functionA_code = '0';
+						}
+						if (value_functionB_code.length == 0) {
+							value_functionB_code = '0';
+						}
+						let code = `${value_functionA_code} ${operation} ${value_functionB_code}`
+						return [code, python.Order.NONE];
+					}
+				},
+				{
+					"name": "section",
+					"description": "Returns whether or not the button is pressed.",
+					"blockTemplate": [
+						["FieldCheckbox", "collapsed", ["FALSE", function(newValue) {
+						if(this.sourceBlock_){
+							this.sourceBlock_.updateShape_(null, newValue)
+						}}]],
+						["FieldTextInput", "section_name", ["label"]],
+						["FieldColourHsvSliders", "color", ["#ff0000", function(newValue) {
+							if(this.sourceBlock_){
+								this.sourceBlock_.updateShape_(newValue, null)
+							}
+						}]],
+						["Statement", "input"],
+					],
+					"save": function() {
+	  					return {
+	    					'collapsed': this.collapsed,
+							'color': this.color,
+	  					};
+					},
+					"load": function(state) {
+	  					var color = state['color'];
+	  					var collapsed = state['collapsed'];
+	  					this.updateShape_(color, collapsed);
+					},
+					"update": function(color, collapsed) {
+						if(color != null) {
+							this.setColour(color == null ? "#ff0000" : color);
+						}
+						if (collapsed != null) {
+							this.getInput("input").setVisible(collapsed === "FALSE")
+							this.render()
+						}
+					},
+					"blockOutput": ["void"],
+					"codeGenerator": function (block) {
+						function dropOneTab(str) {
+    						return str
+    							.split('\n')
+    							.map(line => {
+    							return line.slice(2);
+    							})
+    						.join('\n');
+						}
+						var raw = python.pythonGenerator.statementToCode(block, 'input');
+						var cleaned = dropOneTab(raw);
+						const code = `${cleaned}`;
+						return code;
+					}
+				},
+				{
+					"name": "set_variable",
+					"description": "Returns whether or not the button is pressed.",
+					"blockTemplate": [
+						["Function", "value", "Any"],
+						"Set variable",
+						["FieldVariable", "var_name", ["my variable"]],
+						"to"
+					],
+					"blockOutput": ["void"],
+					"codeGenerator": function (block) {
+						const variableName = spacesToUnderscores(block.getField('var_name').getText())
+						var value_functionA_code = python.pythonGenerator.valueToCode(block, "value", python.Order.ATOMIC);
+						block.getField('var_name')
+						if (value_functionA_code.length == 0) {
+							value_functionA_code = '0';
+						}
+						console.log(variableName)
+						console.log(value_functionA_code)
+						let code = `${variableName} = ${value_functionA_code}`
+						console.log(code)
+						return code;
+					}
+				},
+				{
+					"name": "get_variable",
+					"description": "Returns whether or not the button is pressed.",
+					"blockTemplate": [
+						"Get variable",
+						["FieldVariable", "var_name", ["my variable"]],
+					],
+					"blockOutput": ["Any"],
+					"codeGenerator": function (block) {
+						const variableName = spacesToUnderscores(block.getField('var_name').getText())
+						block.getField('var_name')
+						let code = `${variableName}`
+						console.log(code)
+						return [code, python.Order.NONE];
+					}
+				},
+			]
+		}
 	]
 };
 
+//blockTemplate
 //[Blockly Input Type, Name, (Optional) Additional Params]
 /**
  * Function, Name, Type:Boolean,Number,String,Any
  * Statement, Name
- * FieldTextInput, Name, [Default Text]
- * FieldNumber
+ * FieldTextInput, Name, [Default Text, Validator]
+ * FieldCheckbox, Name, [Default Value, Validator],
+ * FieldNumber, Name, [Default Number, Min, Max, Precision, Validator],
  * FieldDropdown, Name, [[Text, Value], [Text, Value], ...]
  * FieldGridDropdown, Name, [[Text, Value], [Text, Value], ...]
+ * FieldColourHsvSliders, Name, [Default Value, Validator]
+ * FieldVariable, Name, [Default Value]
+ */
+
+//optional tags
+/**
+ * inline: bool
+ * 
  * 
  */
 
@@ -531,13 +653,19 @@ for (let category of functionDefinitions.categories) {
 					for (let item of block.blockTemplate) {
 						if (Array.isArray(item)) {
 							if (item[0] === "FieldTextInput") {
-								dummyInput.appendField(new Blockly.FieldTextInput(item[2][0]), item[1]);
+								dummyInput.appendField(new Blockly.FieldTextInput(item[2][0], item[2][1]), item[1]);
 							} else if (item[0] === "FieldGridDropdown") {
 								dummyInput.appendField(new FieldGridDropdown(item[2]), item[1]);
 							} else if (item[0] === "FieldDropdown") {
 								dummyInput.appendField(new Blockly.FieldDropdown(item[2]), item[1]);
 							} else if (item[0] === "FieldNumber") {
 								dummyInput.appendField(new Blockly.FieldNumber(item[2][0],item[2][1],item[2][2],item[2][3],item[2][4]), item[1]);
+							} else if (item[0] === "FieldCheckbox") {
+								dummyInput.appendField(new Blockly.FieldCheckbox(item[2][0],item[2][1]), item[1]);
+							} else if (item[0] === "FieldColourHsvSliders") {
+								dummyInput.appendField(new FieldColourHsvSliders(item[2][0],item[2][1]), item[1]);
+							} else if (item[0] === "FieldVariable") {
+								dummyInput.appendField(new Blockly.FieldVariable(item[2][0]), item[1]);
 							} else if (item[0] === "Function") {
 								if (item[2] === "Any"){
 									this.appendValueInput(item[1])
@@ -567,7 +695,11 @@ for (let category of functionDefinitions.categories) {
 					this.setTooltip(block.description || '');
 					this.setHelpUrl('');
 					this.setColour(category.color);
-				}
+					this.setInputsInline(block.inline);
+				},
+			saveExtraState: block.save,
+			loadExtraState: block.load,
+			updateShape_: block.update,
 			};
 		if (typeof Blockly !== "undefined" && Blockly.common && Blockly.common.defineBlocks) {
 			Blockly.common.defineBlocks({ [block.name]: blockDef });
@@ -671,78 +803,11 @@ toolboxCategories.contents.push(
         }
 );
 
-//toolboxCategories.contents[5].contents.push({
-//    kind: 'block',
-//    type: 'section',
-//})
-
-//TODO make sure these block save before you add them to the full release
-Blockly.Blocks['section'] = {
-  init: function() {
-	var color = "#ff0000";
-	var collapsed;
-
-	this.appendDummyInput().appendField(new Blockly.FieldCheckbox("",function(newValue) {
-			if(this.sourceBlock_){
-				collapsed = newValue;
-				this.sourceBlock_.updateShape_(null,newValue)
-			}
-		}),"collapsed")
-	.appendField(new Blockly.FieldTextInput("label"), "section_name")
-	.appendField(new FieldColourHsvSliders('#ff0000', function(newValue) {
-			if(this.sourceBlock_){
-				this.sourceBlock_.updateShape_(newValue,null)
-			}
-		}))
-	this.appendStatementInput("input")
-    this.setPreviousStatement(true, ["C", "EN"]);
-    this.setNextStatement(true, ["C", "EN"]);
-	this.setInputsInline(false);
-    this.setColour('#ff0000');
-  },
-
-  mutationToDom: function() {
-	var color;
-	var collapsed;
-    var container = document.createElement('mutation');
-    color = (this.getFieldValue('color') == '#ff0000');
-    container.setAttribute('color', color);
-    return container;
-  },
-
-  domToMutation: function(xmlElement) {
-	var color;
-	var collapsed;
-    color = (xmlElement.getAttribute('color') == '#ff0000');
-    this.updateShape_(color,null);
-  },
-
-  updateShape_: function(color, collapsed) {
-	console.log("update")
-	if(color != null) {
-		this.setColour(color);
-	}
-	if (collapsed != null) {
-		this.getInput("input").setVisible(collapsed === "TRUE")
-		this.render()
-	}
-  }
-};
-
-python.pythonGenerator.forBlock["section"] = function (block) {
-	function dropOneTab(str) {
-    	return str
-    		.split('\n')
-    		.map(line => {
-    		return line.slice(2);
-    		})
-    	.join('\n');
-	}
-	var raw = python.pythonGenerator.statementToCode(block, 'input');
-	var cleaned = dropOneTab(raw);
-	const code = `${cleaned}`;
-	return code;
-}
+toolboxCategories.contents[5].contents.push({
+    "kind": "button",
+    "text": "create variable",
+    "callbackKey": "createVariableButtonPressed"
+})
 
 const toolbox = toolboxCategories;
 

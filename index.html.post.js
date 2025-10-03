@@ -40,6 +40,8 @@ var workspace = Blockly.inject("blockly-canvas", {
     },
 });
 
+workspace.registerButtonCallback("createVariableButtonPressed", function () { Blockly.Variables.createVariableButtonHandler(workspace, null)})
+
 
 const supportedEvents = new Set([
     Blockly.Events.BLOCK_CHANGE,
