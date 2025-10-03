@@ -169,6 +169,7 @@ const functionDefinitions = {
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const number_angle = block.getFieldValue('angle');
+						const number_time = block.getFieldValue('time');
 						const code = `${text_name}.moveto(angle=${number_angle},seconds=${number_time})\n`;
 						return code;
 					}
@@ -573,8 +574,9 @@ const functionDefinitions = {
 						["Function", "value", "Any"],
 						"Set variable",
 						["FieldVariable", "var_name", ["my variable"]],
-						"to"
+						"to",
 					],
+					"inline": true,
 					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
 						const variableName = spacesToUnderscores(block.getField('var_name').getText())

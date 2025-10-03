@@ -12,7 +12,7 @@ export class ProtoRenderer extends Blockly.blockRendering.Renderer {
 export class ProtoRendererConstantProvider extends Blockly.blockRendering.ConstantProvider {
 	//FIELD_TEXT_FONTSIZE = 12;
 
-	FIELD_TEXT_FONTWEIGHT = 'bold';
+	//FIELD_TEXT_FONTWEIGHT = 'bold';
 
 	//FIELD_TEXT_FONTFAMILY = '"Helvetica Neue", "Segoe UI", Helvetica, sans-serif';
 	//FIELD_TEXT_FONTFAMILY = 'Courier New, monospace';
