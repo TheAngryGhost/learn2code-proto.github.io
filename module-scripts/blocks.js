@@ -459,157 +459,157 @@ const functionDefinitions = {
 				},
 			]
 		},
-		{
-			"name": "Test Blocks",
-			"color": "#cc6d44",
-			"blocks": [
-				{
-					"name": "betterif",
-					"description": "if statement help.",
-					"blockTemplate": [
-						"if",
-						["Function", "function", ["Boolean","Any"]],
-						"{new line}",
-						"	then do:",
-						["Statement", "input"],
-					],
-					"blockOutput": ["void"],
-					"codeGenerator": function (block) {
-						var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
-						let len = value_function.length;
-						if (len == 0)
-							value_function = 'False';
-						else {
-							value_function = value_function.replace('(','');
-							value_function = value_function.slice(0,-1);
-						}
-						var input = python.pythonGenerator.statementToCode(block, 'input');
-						if (input.length == 0) {
-							input = '\tpass';
-						}
-						const code = `if ${value_function}:\n${input}\n`;
-						return code;
-					}
-				},
-				{
-					"name": "BetterCompare",
-					"description": "Returns whether or not the button is pressed.",
-					"blockTemplate": [
-						["Function", "functionA", "Any"],
-						"{new line}",
-						["FieldGridDropdown", "operation", [['=', '=='],['>', '>'],['<', '<'],['≠', '!='],['≥', '>='],['≤', '<=']]],
-						["Function", "functionB", "Any"]
-					],
-					"blockOutput": ["Boolean"],
-					"codeGenerator": function (block) {
-						const operation = spacesToUnderscores(block.getFieldValue('operation'));
-						var value_functionA_code = python.pythonGenerator.valueToCode(block, 'functionA', python.Order.ATOMIC);
-						var value_functionB_code = python.pythonGenerator.valueToCode(block, 'functionB', python.Order.ATOMIC);
-						if (value_functionA_code.length == 0) {
-							value_functionA_code = '0';
-						}
-						if (value_functionB_code.length == 0) {
-							value_functionB_code = '0';
-						}
-						let code = `${value_functionA_code} ${operation} ${value_functionB_code}`
-						return [code, python.Order.NONE];
-					}
-				},
-				{
-					"name": "section",
-					"description": "Returns whether or not the button is pressed.",
-					"blockTemplate": [
-						["FieldCheckbox", "collapsed", ["FALSE", function(newValue) {
-						if(this.sourceBlock_){
-							this.sourceBlock_.updateShape_(null, newValue)
-						}}]],
-						["FieldTextInput", "section_name", ["label"]],
-						["FieldColourHsvSliders", "color", ["#ff0000", function(newValue) {
-							if(this.sourceBlock_){
-								this.sourceBlock_.updateShape_(newValue, null)
-							}
-						}]],
-						["Statement", "input"],
-					],
-					"save": function() {
-	  					return {
-	    					'collapsed': this.collapsed,
-							'color': this.color,
-	  					};
-					},
-					"load": function(state) {
-	  					var color = state['color'];
-	  					var collapsed = state['collapsed'];
-	  					this.updateShape_(color, collapsed);
-					},
-					"update": function(color, collapsed) {
-						if(color != null) {
-							this.setColour(color == null ? "#ff0000" : color);
-						}
-						if (collapsed != null) {
-							this.getInput("input").setVisible(collapsed === "FALSE")
-							this.render()
-						}
-					},
-					"blockOutput": ["void"],
-					"codeGenerator": function (block) {
-						function dropOneTab(str) {
-    						return str
-    							.split('\n')
-    							.map(line => {
-    							return line.slice(2);
-    							})
-    						.join('\n');
-						}
-						var raw = python.pythonGenerator.statementToCode(block, 'input');
-						var cleaned = dropOneTab(raw);
-						const code = `${cleaned}`;
-						return code;
-					}
-				},
-				{
-					"name": "set_variable",
-					"description": "Returns whether or not the button is pressed.",
-					"blockTemplate": [
-						["Function", "value", "Any"],
-						"Set variable",
-						["FieldVariable", "var_name", ["my variable"]],
-						"to",
-					],
-					"inline": true,
-					"blockOutput": ["void"],
-					"codeGenerator": function (block) {
-						const variableName = spacesToUnderscores(block.getField('var_name').getText())
-						var value_functionA_code = python.pythonGenerator.valueToCode(block, "value", python.Order.ATOMIC);
-						block.getField('var_name')
-						if (value_functionA_code.length == 0) {
-							value_functionA_code = '0';
-						}
-						console.log(variableName)
-						console.log(value_functionA_code)
-						let code = `${variableName} = ${value_functionA_code}`
-						console.log(code)
-						return code;
-					}
-				},
-				{
-					"name": "get_variable",
-					"description": "Returns whether or not the button is pressed.",
-					"blockTemplate": [
-						"Get variable",
-						["FieldVariable", "var_name", ["my variable"]],
-					],
-					"blockOutput": ["Any"],
-					"codeGenerator": function (block) {
-						const variableName = spacesToUnderscores(block.getField('var_name').getText())
-						block.getField('var_name')
-						let code = `${variableName}`
-						console.log(code)
-						return [code, python.Order.NONE];
-					}
-				},
-			]
-		}
+		//{
+		//	"name": "Test Blocks",
+		//	"color": "#cc6d44",
+		//	"blocks": [
+		//		{
+		//			"name": "betterif",
+		//			"description": "if statement help.",
+		//			"blockTemplate": [
+		//				"if",
+		//				["Function", "function", ["Boolean","Any"]],
+		//				"{new line}",
+		//				"	then do:",
+		//				["Statement", "input"],
+		//			],
+		//			"blockOutput": ["void"],
+		//			"codeGenerator": function (block) {
+		//				var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
+		//				let len = value_function.length;
+		//				if (len == 0)
+		//					value_function = 'False';
+		//				else {
+		//					value_function = value_function.replace('(','');
+		//					value_function = value_function.slice(0,-1);
+		//				}
+		//				var input = python.pythonGenerator.statementToCode(block, 'input');
+		//				if (input.length == 0) {
+		//					input = '\tpass';
+		//				}
+		//				const code = `if ${value_function}:\n${input}\n`;
+		//				return code;
+		//			}
+		//		},
+		//		{
+		//			"name": "BetterCompare",
+		//			"description": "Returns whether or not the button is pressed.",
+		//			"blockTemplate": [
+		//				["Function", "functionA", "Any"],
+		//				"{new line}",
+		//				["FieldGridDropdown", "operation", [['=', '=='],['>', '>'],['<', '<'],['≠', '!='],['≥', '>='],['≤', '<=']]],
+		//				["Function", "functionB", "Any"]
+		//			],
+		//			"blockOutput": ["Boolean"],
+		//			"codeGenerator": function (block) {
+		//				const operation = spacesToUnderscores(block.getFieldValue('operation'));
+		//				var value_functionA_code = python.pythonGenerator.valueToCode(block, 'functionA', python.Order.ATOMIC);
+		//				var value_functionB_code = python.pythonGenerator.valueToCode(block, 'functionB', python.Order.ATOMIC);
+		//				if (value_functionA_code.length == 0) {
+		//					value_functionA_code = '0';
+		//				}
+		//				if (value_functionB_code.length == 0) {
+		//					value_functionB_code = '0';
+		//				}
+		//				let code = `${value_functionA_code} ${operation} ${value_functionB_code}`
+		//				return [code, python.Order.NONE];
+		//			}
+		//		},
+		//		{
+		//			"name": "section",
+		//			"description": "Returns whether or not the button is pressed.",
+		//			"blockTemplate": [
+		//				["FieldCheckbox", "collapsed", ["FALSE", function(newValue) {
+		//				if(this.sourceBlock_){
+		//					this.sourceBlock_.updateShape_(null, newValue)
+		//				}}]],
+		//				["FieldTextInput", "section_name", ["label"]],
+		//				["FieldColourHsvSliders", "color", ["#ff0000", function(newValue) {
+		//					if(this.sourceBlock_){
+		//						this.sourceBlock_.updateShape_(newValue, null)
+		//					}
+		//				}]],
+		//				["Statement", "input"],
+		//			],
+		//			"save": function() {
+	  	//				return {
+	    //					'collapsed': this.collapsed,
+		//					'color': this.color,
+	  	//				};
+		//			},
+		//			"load": function(state) {
+	  	//				var color = state['color'];
+	  	//				var collapsed = state['collapsed'];
+	  	//				this.updateShape_(color, collapsed);
+		//			},
+		//			"update": function(color, collapsed) {
+		//				if(color != null) {
+		//					this.setColour(color == null ? "#ff0000" : color);
+		//				}
+		//				if (collapsed != null) {
+		//					this.getInput("input").setVisible(collapsed === "FALSE")
+		//					this.render()
+		//				}
+		//			},
+		//			"blockOutput": ["void"],
+		//			"codeGenerator": function (block) {
+		//				function dropOneTab(str) {
+    	//					return str
+    	//						.split('\n')
+    	//						.map(line => {
+    	//						return line.slice(2);
+    	//						})
+    	//					.join('\n');
+		//				}
+		//				var raw = python.pythonGenerator.statementToCode(block, 'input');
+		//				var cleaned = dropOneTab(raw);
+		//				const code = `${cleaned}`;
+		//				return code;
+		//			}
+		//		},
+		//		{
+		//			"name": "set_variable",
+		//			"description": "Returns whether or not the button is pressed.",
+		//			"blockTemplate": [
+		//				["Function", "value", "Any"],
+		//				"Set variable",
+		//				["FieldVariable", "var_name", ["my variable"]],
+		//				"to",
+		//			],
+		//			"inline": true,
+		//			"blockOutput": ["void"],
+		//			"codeGenerator": function (block) {
+		//				const variableName = spacesToUnderscores(block.getField('var_name').getText())
+		//				var value_functionA_code = python.pythonGenerator.valueToCode(block, "value", python.Order.ATOMIC);
+		//				block.getField('var_name')
+		//				if (value_functionA_code.length == 0) {
+		//					value_functionA_code = '0';
+		//				}
+		//				console.log(variableName)
+		//				console.log(value_functionA_code)
+		//				let code = `${variableName} = ${value_functionA_code}`
+		//				console.log(code)
+		//				return code;
+		//			}
+		//		},
+		//		{
+		//			"name": "get_variable",
+		//			"description": "Returns whether or not the button is pressed.",
+		//			"blockTemplate": [
+		//				"Get variable",
+		//				["FieldVariable", "var_name", ["my variable"]],
+		//			],
+		//			"blockOutput": ["Any"],
+		//			"codeGenerator": function (block) {
+		//				const variableName = spacesToUnderscores(block.getField('var_name').getText())
+		//				block.getField('var_name')
+		//				let code = `${variableName}`
+		//				console.log(code)
+		//				return [code, python.Order.NONE];
+		//			}
+		//		},
+		//	]
+		//}
 	]
 };
 
@@ -736,80 +736,116 @@ for (let category of functionDefinitions.categories) {
 }
 
 
+//toolboxCategories.contents.push(
+//	{
+//      kind: 'category',
+//      name: 'Flow',
+//      colour: '#e9a719',
+//      contents: [
+//        {
+//          kind: 'block',
+//          type: 'controls_if',
+//        },
+//        {
+//          kind: 'block',
+//          type: 'logic_compare',
+//        },
+//        {
+//          kind: 'block',
+//          type: 'logic_operation',
+//        },
+//        {
+//          kind: 'block',
+//          type: 'logic_negate',
+//        },
+//        {
+//          kind: 'block',
+//          type: 'logic_boolean',
+//        },
+//		{
+//            kind: 'block',
+//            type: 'controls_repeat_ext',
+//            inputs: {
+//                TIMES: {
+//                    block: {
+//                        type: 'math_number',
+//                        fields: {
+//                            NUM: 10,
+//                        },
+//                    },
+//                },
+//            },
+//        },
+//        {
+//            kind: 'block',
+//            type: 'controls_whileUntil',
+//        },
+//      ],
+//    },
+//);
+
+//toolboxCategories.contents.push(
+//        {
+//          kind: 'category',
+//          name: 'Math',
+//          colour: '#cc44cc',
+//          contents: [
+//            {
+//              kind: 'block',
+//              type: 'math_number',
+//              fields: {
+//                NUM: 123,
+//              },
+//            },
+//            {
+//              kind: 'block',
+//              type: 'math_arithmetic',
+//            },
+//          ],
+//        }
+//);
+
 toolboxCategories.contents.push(
-	{
-      kind: 'category',
-      name: 'Flow',
-      colour: '#e9a719',
-      contents: [
-        {
-          kind: 'block',
-          type: 'controls_if',
-        },
-        {
-          kind: 'block',
-          type: 'logic_compare',
-        },
-        {
-          kind: 'block',
-          type: 'logic_operation',
-        },
-        {
-          kind: 'block',
-          type: 'logic_negate',
-        },
-        {
-          kind: 'block',
-          type: 'logic_boolean',
-        },
-		{
-            kind: 'block',
-            type: 'controls_repeat_ext',
-            inputs: {
-                TIMES: {
-                    block: {
-                        type: 'math_number',
-                        fields: {
-                            NUM: 10,
+    {
+        kind: 'category',
+        name: 'Flow',
+        colour: '#e7d533',
+        contents: [
+            {
+                kind: 'block',
+                type: 'controls_if',
+            },
+            {
+                kind: 'block',
+                type: 'logic_negate',
+            },
+            {
+                kind: 'block',
+                type: 'controls_repeat_ext',
+                inputs: {
+                    TIMES: {
+                        block: {
+                            type: 'math_number',
+                            fields: {
+                                NUM: 10,
+                            },
                         },
                     },
                 },
             },
-        },
-        {
-            kind: 'block',
-            type: 'controls_whileUntil',
-        },
-      ],
+            {
+                kind: 'block',
+                type: 'controls_whileUntil',
+            },
+        ],
     },
 );
 
-toolboxCategories.contents.push(
-        {
-          kind: 'category',
-          name: 'Math',
-          colour: '#cc44cc',
-          contents: [
-            {
-              kind: 'block',
-              type: 'math_number',
-              fields: {
-                NUM: 123,
-              },
-            },
-            {
-              kind: 'block',
-              type: 'math_arithmetic',
-            },
-          ],
-        }
-);
-
-toolboxCategories.contents[5].contents.push({
-    "kind": "button",
-    "text": "create variable",
-    "callbackKey": "createVariableButtonPressed"
-})
+//toolboxCategories.contents[5].contents.push({
+//    "kind": "button",
+//    "text": "create variable",
+//    "callbackKey": "createVariableButtonPressed"
+//})
 
 const toolbox = toolboxCategories;
 

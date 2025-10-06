@@ -10,52 +10,32 @@ export class ProtoRenderer extends Blockly.blockRendering.Renderer {
 }
 
 export class ProtoRendererConstantProvider extends Blockly.blockRendering.ConstantProvider {
+
+	//optional modifiers
 	//FIELD_TEXT_FONTSIZE = 10;
 
 	//FIELD_TEXT_FONTWEIGHT = 'bold';
 
 	//FIELD_TEXT_FONTFAMILY = '"Helvetica Neue", "Segoe UI", Helvetica, sans-serif';
-	//FIELD_TEXT_FONTFAMILY = 'Courier New, monospace';
 	//FIELD_TEXT_FONTFAMILY = 'Ubuntu Mono, monospace';
-	//FIELD_TEXT_FONTFAMILY = 'Fira Code, monospace';
 
 	constructor() {
 		// Set up all of the constants from the base provider.
 		super();
 
-		/**
-		 * The width of the notch used for previous and next connections.
-		 * @type {number}
-		 * @override
-		 */
+		//width of all vertical connection points
 		this.NOTCH_WIDTH = 18;
 
-		/**
-		 * The height of the notch used for previous and next connections.
-		 * @type {number}
-		 * @override
-		 */
+		//height of all vertical connection points
 		this.NOTCH_HEIGHT = 6;
 
-		/**
-		 * Rounded corner radius.
-		 * @type {number}
-		 * @override
-		 */
+		//how round the blocks are
 		this.CORNER_RADIUS = 3;
 
-		/**
-		 * The width of the puzzle tab used for input and output connections.
-		 * @type {number}
-		 * @override
-		 */
+		// the width of all horizontal connection points
 		this.TAB_WIDTH = 10;
 
-		/**
-		 * The height of the puzzle tab used for input and output connections.
-		 * @type {number}
-		 * @override
-		 */
+		// the height of all horizontal connection points
 		this.TAB_HEIGHT = 10;
 	}
 
@@ -72,9 +52,6 @@ export class ProtoRendererConstantProvider extends Blockly.blockRendering.Consta
 		this.DEFAULT_HORIZONTAL = this.PUZZLE_TAB;
 	}
 
-	/**
-	 * @override
-	 */
 	shapeFor(connection) {
 		var checks = connection.getCheck();
 		switch (connection.type) {
@@ -84,12 +61,12 @@ export class ProtoRendererConstantProvider extends Blockly.blockRendering.Consta
 					return this.ROUND_HORIZONTAL;
 				}
 				if (checks && checks.includes('String')) {
-					return this.DEFAULT_HORIZONTAL;
+					return this.ROUND_HORIZONTAL;
 				}
 				if (checks && checks.includes('Boolean')) {
 				    return this.TRIANGULAR_HORIZONTAL;
 				}
-				return this.DEFAULT_HORIZONTAL;
+				return this.ROUND_HORIZONTAL;
 			case Blockly.PREVIOUS_STATEMENT:
 			case Blockly.NEXT_STATEMENT:
 				return this.DEFAULT_VERTICAL;
