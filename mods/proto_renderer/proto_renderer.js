@@ -1,3 +1,6 @@
+// Blockly
+import * as Blockly from 'blockly';
+
 export class ProtoRenderer extends Blockly.blockRendering.Renderer {
 	constructor() {
 		super();

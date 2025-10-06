@@ -1,8 +1,36 @@
 console.info("... post script loaded");
 
+import './index.html.css';
+import 'prismjs/themes/prism-tomorrow.css'; // or prism.css, prism-okaidia.css, etc.
+
 import { toolbox } from "./module-scripts/blocks.js";
 import { keywords } from "./module-scripts/blocks.js";
 import { getTheme } from "./module-scripts/themes.js";
+
+// Blockly
+import * as Blockly from 'blockly';
+//import 'blockly/python'; // imports Blockly.Python generator
+import {pythonGenerator} from 'blockly/python';
+import '@blockly/field-grid-dropdown';
+import {registerContinuousToolbox} from '@blockly/continuous-toolbox';
+import {registerFieldColour} from '@blockly/field-colour';
+import '@blockly/field-colour-hsv-sliders';
+import 'blockly/msg/en'; // for messages
+
+// Prism
+import Prism from 'prismjs';
+//import PrismPython from 'prismjs/components/prism-python.js';
+import 'prismjs/components/prism-python.js';
+
+// CodeMirror
+import 'codemirror/lib/codemirror.css'; // CSS
+import 'codemirror/addon/hint/show-hint.css';
+import CodeMirror from 'codemirror';
+//import CodeMirror from 'codemirror/lib/codemirror.js';
+import 'codemirror/addon/hint/show-hint.js';
+
+// JSZip
+import JSZip from 'jszip';
 
 export {workspace};
 
@@ -54,7 +82,7 @@ workspace.addChangeListener((event) => {
     if (workspace.isDragging()) return;
     if (!supportedEvents.has(event.type)) return;
 
-    const code = python.pythonGenerator.workspaceToCode(workspace);
+    const code = pythonGenerator.workspaceToCode(workspace);
     const codeContainer = document.getElementById("line-preview-text");
 
     codeContainer.innerHTML = Prism.highlight(
@@ -110,6 +138,8 @@ function switchEditor() {
     }
 }
 
+window.switchEditor = switchEditor;
+
 // Save code Button
 function saveTextFromLineEditor() {
     const code = codeInput.innerText;
@@ -141,6 +171,7 @@ function saveCodeFromBlockEditor() {
 
     console.log("Blocks saved to local storage. JSON: " + jsonString);
 }
+window.saveBlocksButton = saveBlocksButton;
 
 const loadBlocksButton = document.getElementById('load-blocks-button');
 loadBlocksButton.addEventListener('click', loadCodeIntoBlockEditor);
@@ -169,6 +200,7 @@ function loadCodeIntoBlockEditor() {
     // Programmatically trigger the file‑picker dialog
     input.click();
 }
+window.loadBlocksButton = loadBlocksButton;
 
 codeInput.addEventListener("input", () => {
     const caretPosition = getCaretPosition(codeInput);

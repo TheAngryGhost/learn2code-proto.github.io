@@ -2,6 +2,29 @@ export { toolbox };
 export { keywords };
 export { spacesToUnderscores };
 
+// Blockly
+import * as Blockly from 'blockly';
+import {FieldGridDropdown} from '@blockly/field-grid-dropdown';
+import '@blockly/continuous-toolbox';
+import '@blockly/field-colour';
+import {FieldColourHsvSliders} from '@blockly/field-colour-hsv-sliders';
+import 'blockly/msg/en'; // for messages
+import {pythonGenerator, Order} from 'blockly/python';
+
+// Prism
+//import 'prismjs';
+//import 'prismjs/components/prism-python';
+
+// CodeMirror
+//import 'codemirror/lib/codemirror.css'; // CSS
+//import 'codemirror/addon/hint/show-hint.css';
+//import CodeMirror from 'codemirror';
+//import 'codemirror/addon/hint/show-hint';
+
+// JSZip
+//import JSZip from 'jszip';
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Definitions
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -369,7 +392,7 @@ const functionDefinitions = {
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const code = `${text_name}.pressed()`;
-						return [code, python.Order.NONE];
+						return [code, Order.NONE];
 					}
 				},
 				{
@@ -384,7 +407,7 @@ const functionDefinitions = {
 					"codeGenerator": function (block) {
 						const text_name = spacesToUnderscores(block.getFieldValue('name'));
 						const code = `${text_name}.held()`;
-						return [code, python.Order.NONE];
+						return [code, Order.NONE];
 					}
 				}
 			]
@@ -420,7 +443,7 @@ const functionDefinitions = {
 					"autoComplete": ".wait_until(",
 					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
-						var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
+						var value_function = pythonGenerator.valueToCode(block, 'function', Order.ATOMIC);
 						let len = value_function.length;
 						let functionText;
 						if (len < 4)
@@ -444,7 +467,7 @@ const functionDefinitions = {
 					"autoComplete": ".wait_while(",
 					"blockOutput": ["void"],
 					"codeGenerator": function (block) {
-						var value_function = python.pythonGenerator.valueToCode(block, 'function', python.Order.ATOMIC);
+						var value_function = pythonGenerator.valueToCode(block, 'function', Order.ATOMIC);
 						let len = value_function.length;
 						let functionText;
 						if (len < 4)
@@ -710,8 +733,8 @@ for (let category of functionDefinitions.categories) {
 		} else {
 			console.error("Blockly is not defined. Please ensure Blockly is loaded.");
 		}
-		if (typeof python !== "undefined" && python.pythonGenerator && block.codeGenerator) {
-			python.pythonGenerator.forBlock[block.name] = block.codeGenerator;
+		if (block.codeGenerator) {
+			pythonGenerator.forBlock[block.name] = block.codeGenerator;
 		}
 		namesUsed.push(block.name);
 		if (Array.isArray(block.autoComplete)) {

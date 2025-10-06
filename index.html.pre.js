@@ -1,8 +1,12 @@
 console.info('... pre script loaded');
 
+import './index.html.css';
+
 function copyText(element) {
     window.navigator.clipboard.writeText(element.innerText);
 }
+
+window.copyText = copyText;
 
 function saveText(element) {
     const zip = new JSZip();
@@ -20,7 +24,11 @@ function saveText(element) {
         });
 }
 
+window.saveText = saveText;
+
 function switchEditor() {
     document.getElementById('line-editor').toggleAttribute('data-closed');
     document.getElementById('block-editor').toggleAttribute('data-closed');
 }
+
+window.switchEditor = switchEditor;
