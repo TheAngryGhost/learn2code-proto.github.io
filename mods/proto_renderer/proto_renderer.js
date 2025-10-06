@@ -10,7 +10,7 @@ export class ProtoRenderer extends Blockly.blockRendering.Renderer {
 }
 
 export class ProtoRendererConstantProvider extends Blockly.blockRendering.ConstantProvider {
-	//FIELD_TEXT_FONTSIZE = 12;
+	//FIELD_TEXT_FONTSIZE = 10;
 
 	//FIELD_TEXT_FONTWEIGHT = 'bold';
 
@@ -28,35 +28,35 @@ export class ProtoRendererConstantProvider extends Blockly.blockRendering.Consta
 		 * @type {number}
 		 * @override
 		 */
-		this.NOTCH_WIDTH = 35;
+		this.NOTCH_WIDTH = 18;
 
 		/**
 		 * The height of the notch used for previous and next connections.
 		 * @type {number}
 		 * @override
 		 */
-		this.NOTCH_HEIGHT = 15;
+		this.NOTCH_HEIGHT = 6;
 
 		/**
 		 * Rounded corner radius.
 		 * @type {number}
 		 * @override
 		 */
-		this.CORNER_RADIUS = 5;
+		this.CORNER_RADIUS = 3;
 
 		/**
 		 * The width of the puzzle tab used for input and output connections.
 		 * @type {number}
 		 * @override
 		 */
-		this.TAB_WIDTH = 20;
+		this.TAB_WIDTH = 10;
 
 		/**
 		 * The height of the puzzle tab used for input and output connections.
 		 * @type {number}
 		 * @override
 		 */
-		this.TAB_HEIGHT = 20;
+		this.TAB_HEIGHT = 10;
 	}
 
 	init() {
@@ -275,7 +275,7 @@ export class ProtoRendererConstantProvider extends Blockly.blockRendering.Consta
 			const overlap = -3;
 			const halfHeight = height / 2;
 			const control1Y = halfHeight;
-			const control2Y = halfHeight - 15;
+			const control2Y = halfHeight - halfHeight * 1.5;
 			const control3Y = overlap;
 			const endPoint1 = Blockly.utils.svgPaths.point(-width, forward * halfHeight);
 			const endPoint2 = Blockly.utils.svgPaths.point(width, forward * halfHeight);
