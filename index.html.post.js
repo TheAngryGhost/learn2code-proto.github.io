@@ -1,5 +1,66 @@
 console.info("... post script loaded");
 
+import { EditorState } from "@codemirror/state";
+import {EditorView, basicSetup} from "codemirror"
+import {python} from "@codemirror/lang-python"
+import { oneDark } from '@codemirror/theme-one-dark';
+import {autocompletion, completeFromList } from "@codemirror/autocomplete"
+
+// List of math library completions
+const mathCompletions = [
+  { label: "math", type: "module", info: "Python math module" },
+  { label: "math.sqrt", type: "function", info: "Return the square root of x" },
+  { label: "math.sin", type: "function", info: "Return the sine of x (x in radians)" },
+  { label: "math.cos", type: "function", info: "Return the cosine of x (x in radians)" },
+  { label: "math.tan", type: "function", info: "Return the tangent of x (x in radians)" },
+  { label: "math.log", type: "function", info: "Return the natural logarithm of x" },
+  { label: "math.exp", type: "function", info: "Return e**x" },
+  { label: "math.pi", type: "constant", info: "The mathematical constant π" },
+  { label: "math.e", type: "constant", info: "Euler's number e" }
+];
+
+const container  = document.getElementById("editor-container");
+const view = new EditorView({
+    state: EditorState.create({
+  doc: "import make\n\n",
+  extensions: [basicSetup, python(), oneDark,       autocompletion({
+        override: [completeFromList(mathCompletions)]
+      })],
+    }),
+  parent: container
+})
+
+const code = view.state.doc.toString();
+console.log(code);
+
+function setEditorText(view, text) {
+  view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: text } });
+}
+
+setEditorText(view, "new Python code")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import './index.html.css';
 import 'prismjs/themes/prism-tomorrow.css'; // or prism.css, prism-okaidia.css, etc.
 
@@ -23,11 +84,11 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-python.js';
 
 // CodeMirror
-import 'codemirror/lib/codemirror.css'; // CSS
-import 'codemirror/addon/hint/show-hint.css';
-import CodeMirror from 'codemirror';
-//import CodeMirror from 'codemirror/lib/codemirror.js';
-import 'codemirror/addon/hint/show-hint.js';
+//import 'codemirror/lib/codemirror.css'; // CSS
+//import 'codemirror/addon/hint/show-hint.css';
+//import CodeMirror from 'codemirror';
+////import CodeMirror from 'codemirror/lib/codemirror.js';
+//import 'codemirror/addon/hint/show-hint.js';
 
 // JSZip
 import JSZip from 'jszip';
@@ -201,222 +262,3 @@ function loadCodeIntoBlockEditor() {
     input.click();
 }
 window.loadBlocksButton = loadBlocksButton;
-
-codeInput.addEventListener("input", () => {
-    const caretPosition = getCaretPosition(codeInput);
-    const code = codeInput.innerText;
-    const highlightedCode = Prism.highlight(
-        code,
-        Prism.languages.python,
-        "python"
-    );
-
-    codeInput.innerHTML = highlightedCode;
-    setCaretPosition(codeInput, caretPosition);
-
-    const text = codeInput.innerText;
-    const caretWordInfo = getWordAfterDotAtCaret(text, caretPosition);
-    const { wordAfterDot, caretOffset } = caretWordInfo;
-
-    const matchingKeywords = keywords.filter((keyword) =>
-        keyword.startsWith(`.${wordAfterDot}`)
-    );
-    if (matchingKeywords.length > 0 && wordAfterDot.length > 0) {
-        showSuggestions(matchingKeywords, caretOffset);
-    } else {
-        hideSuggestions();
-    }
-});
-
-// get words after dot(.) apperance(for checking keywords)
-function getWordAfterDotAtCaret(text, caretPosition) {
-    const leftOfCaret = text.slice(0, caretPosition);
-    const match = leftOfCaret.match(/\.([a-zA-Z_]*)$/);
-    const wordAfterDot = match ? match[1] : "";
-    return { wordAfterDot, caretOffset: leftOfCaret.length };
-}
-
-function showSuggestions(matches, caretOffset) {
-    suggestionBox.innerHTML = "";
-    matches.forEach((match) => {
-        const suggestion = document.createElement("div");
-        suggestion.innerText = match;
-        suggestionBox.appendChild(suggestion);
-    });
-
-    // Get the current cursor position
-    const range = window.getSelection().getRangeAt(0);
-    const rect = range.getBoundingClientRect();
-
-    // Position the suggestion box near the cursor
-    suggestionBox.style.position = "absolute";
-    suggestionBox.style.left = `${rect.left + window.scrollX}px`;
-    suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
-    suggestionBox.style.display = "block";
-
-    // Ensure the box stays visible if near window edge
-    const boxRect = suggestionBox.getBoundingClientRect();
-    if (boxRect.right > window.innerWidth) {
-        suggestionBox.style.left = `${window.innerWidth - boxRect.width - 10}px`;
-    }
-    if (boxRect.bottom > window.innerHeight) {
-        suggestionBox.style.top = `${rect.top + window.scrollY - boxRect.height}px`;
-    }
-}
-
-function hideSuggestions() {
-    suggestionBox.style.display = "none";
-}
-
-codeInput.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-        hideSuggestions();
-    } else if (event.key === "Enter") {
-        event.preventDefault();
-        if (inIndentMode) {
-            document.execCommand("insertLineBreak");
-            for (let i = 0; i < indentationLevel; i++) {
-                const indentSpan = document.createElement("span");
-                indentSpan.className = "indent-space";
-                indentSpan.innerHTML = "&nbsp;&nbsp;&nbsp;";
-                const selection = window.getSelection();
-                const range = selection.getRangeAt(0);
-                range.insertNode(indentSpan);
-                range.setStartAfter(indentSpan);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        } else {
-            document.execCommand("insertLineBreak");
-        }
-    }
-
-    if (event.key === "Tab") {
-        if (suggestionBox.style.display === "block") {
-            event.preventDefault();
-            const suggestion = suggestionBox.firstChild
-                ? suggestionBox.firstChild.innerText
-                : null;
-            if (suggestion) {
-                const caretPosition = getCaretPosition(codeInput);
-                const text = codeInput.innerText;
-                const caretWordInfo = getWordAfterDotAtCaret(text, caretPosition);
-                const { wordAfterDot } = caretWordInfo;
-
-                const beforeWord = text.slice(
-                    0,
-                    caretPosition - wordAfterDot.length - 1
-                );
-                const afterWord = text.slice(caretPosition);
-                const updatedText = beforeWord + suggestion + afterWord;
-
-                codeInput.innerText = updatedText;
-                const highlightedCode = Prism.highlight(
-                    updatedText,
-                    Prism.languages.python,
-                    "python"
-                );
-                codeInput.innerHTML = highlightedCode;
-
-                const newCaretPosition = beforeWord.length + suggestion.length;
-                setCaretPosition(codeInput, newCaretPosition);
-                hideSuggestions();
-            }
-        } else {
-            event.preventDefault();
-            inIndentMode = true;
-            indentationLevel++;
-            const indentSpan = document.createElement("span");
-            indentSpan.className = "indent-space";
-            indentSpan.innerHTML = "&nbsp;&nbsp;&nbsp;";
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            range.insertNode(indentSpan);
-            range.setStartAfter(indentSpan);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-    }
-
-    if (event.key === "Backspace") {
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            if (
-                range.startContainer.nodeType === Node.TEXT_NODE &&
-                range.startOffset === 0
-            ) {
-                const previousNode = range.startContainer.previousSibling;
-                if (
-                    previousNode &&
-                    previousNode.classList &&
-                    previousNode.classList.contains("indent-space")
-                ) {
-                    event.preventDefault();
-                    previousNode.remove();
-                    indentationLevel--;
-                    if (indentationLevel === 0) inIndentMode = false;
-                }
-            } else if (range.startContainer.nodeType === Node.ELEMENT_NODE) {
-                const previousNode =
-                    range.startContainer.childNodes[range.startOffset - 1];
-                if (
-                    previousNode &&
-                    previousNode.classList &&
-                    previousNode.classList.contains("indent-space")
-                ) {
-                    event.preventDefault();
-                    previousNode.remove();
-                    indentationLevel--;
-                    if (indentationLevel === 0) inIndentMode = false;
-                }
-            }
-        }
-    }
-});
-
-//Get's cursor position
-function getCaretPosition(element) {
-    const selection = window.getSelection();
-    let position = 0;
-
-    if (selection.rangeCount !== 0) {
-        const range = selection.getRangeAt(0);
-        const preCaretRange = range.cloneRange();
-        preCaretRange.selectNodeContents(element);
-        preCaretRange.setEnd(range.endContainer, range.endOffset);
-        position = preCaretRange.toString().length;
-    }
-
-    return position;
-}
-
-//Set's cursor position
-function setCaretPosition(element, position) {
-    const range = document.createRange();
-    const selection = window.getSelection();
-    let currentNode = element;
-    let currentOffset = 0;
-
-    const nodeWalker = document.createTreeWalker(
-        element,
-        NodeFilter.SHOW_TEXT,
-        null,
-        false
-    );
-    while (nodeWalker.nextNode()) {
-        const textNode = nodeWalker.currentNode;
-        const nodeLength = textNode.length;
-
-        if (position <= currentOffset + nodeLength) {
-            range.setStart(textNode, position - currentOffset);
-            range.collapse(true);
-            break;
-        }
-
-        currentOffset += nodeLength;
-    }
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-}
