@@ -1,4 +1,4 @@
-console.info("... post script loaded");
+import './index.html.css';
 
 import { EditorState } from "@codemirror/state";
 import { EditorView, keymap } from "@codemirror/view";
@@ -8,9 +8,6 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import {autocompletion, completeFromList } from "@codemirror/autocomplete"
 import {defaultKeymap, indentWithTab } from "@codemirror/commands"
 import { hoverTooltip } from "@codemirror/view";
-
-import './index.html.css';
-import 'prismjs/themes/prism-tomorrow.css';
 
 import { toolbox } from "./module-scripts/blocks.js";
 import { keywords } from "./module-scripts/blocks.js";
@@ -24,19 +21,54 @@ import {registerContinuousToolbox} from '@blockly/continuous-toolbox';
 import {registerFieldColour} from '@blockly/field-colour';
 import '@blockly/field-colour-hsv-sliders';
 import 'blockly/msg/en'; // for messages
+import { inject } from "./mods/mods.js";
 
 // Prism
 import Prism from 'prismjs';
 import 'prismjs/components/prism-python.js';
+import 'prismjs/themes/prism-tomorrow.css';
 
 import JSZip from 'jszip';
 
 export {workspace};
 
+function copyText(element) {
+    window.navigator.clipboard.writeText(element.innerText);
+}
+
+window.copyText = copyText;
+
+function saveText(element) {
+    const zip = new JSZip();
+
+    // Add the code to a file named main.py
+    zip.file('main.py', element.innerText);
+
+    // Compress the code and download it
+    zip.generateAsync({ type: "base64" })
+        .then((encoding) => {
+            const dummyLink = document.createElement('a');
+            dummyLink.download = 'proto.zip';
+            dummyLink.href = 'data:application/zip;base64,' + encoding;
+            dummyLink.dispatchEvent(new MouseEvent('click'));
+        });
+}
+
+window.saveText = saveText;
+
+function switchEditor() {
+    document.getElementById('line-editor').toggleAttribute('data-closed');
+    document.getElementById('block-editor').toggleAttribute('data-closed');
+}
+
+window.switchEditor = switchEditor;
+
+console.info("... post script loaded");
+
+
 //setup for blockly plugins and mods
 registerContinuousToolbox();
 registerFieldColour();
-import { inject } from "./mods/mods.js";
 inject();
 
 var workspace = Blockly.inject("blockly-canvas", {
@@ -171,27 +203,6 @@ if (codeEditorContainer) {
     });
 } else {
     console.error("Could not find code editor container or input element.");
-}
-
-function switchEditor() {
-    document.getElementById('line-editor').toggleAttribute('data-closed');
-    document.getElementById('block-editor').toggleAttribute('data-closed');
-}
-
-window.switchEditor = switchEditor;
-
-// Save code Button
-function saveTextFromLineEditor() {
-    const code = codeInput.innerText;
-    const blob = new Blob([code], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "main.py";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
 }
 
 const saveBlocksButton = document.getElementById('save-blocks-button');
